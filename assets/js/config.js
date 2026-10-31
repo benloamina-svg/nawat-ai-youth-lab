@@ -8,5 +8,7 @@ window.SITE_CONFIG = {
   showcaseFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLScK951YrrZFIJjtrX5d85cQRgrKQpRiHbvgc7hD0QE85iRihA/viewform',   // Google Form 1: "AI Makers Showcase — Submit Your Team Idea"
   feedbackFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSemSToTP4hzF2ZWp3BYOXEtN_owhAQqpmURxrLtbETzctnRWw/viewform',   // Google Form 2: "Feedback — NAWAT AI Youth Lab"
   contactEmail: 'nawat.ai.youthlab@gmail.com',
+  instagramUrl: 'https://www.instagram.com/nawat_ai_dz/',
+  facebookUrl: 'https://www.facebook.com/profile.php?id=61589465312423',
   siteUrl: 'https://benloamina-svg.github.io/nawat-ai-youth-lab/'
 };

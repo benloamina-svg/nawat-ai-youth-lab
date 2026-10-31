@@ -14,4 +14,6 @@
 | 10 | 31 Oct 2026 | Canvas and SMART game follow TIRYAQ worksheets 3 and 10, in English | Same method as TIRYAQ trainings; the site becomes their digital companion |
 | 12 | 31 Oct 2026 | Design v2: dark void style with NAWAT colours, self-hosted Inter, constellation hero | Owner's chosen reference; self-hosting keeps the strict security policy and works offline |
 | 13 | 31 Oct 2026 | Body text weight 300 instead of 200 | 200 is hard to read on many Windows screens (accessibility) |
+| 14 | 31 Oct 2026 | Arabic as twin static pages in `/ar/` (not JS text swapping) | Works without JavaScript, proper RTL, each language indexable by search engines, shareable links |
+| 15 | 31 Oct 2026 | Self-host Noto Kufi Arabic (NAWAT brand Arabic font) | Keeps strict CSP and offline use |
 | 11 | 31 Oct 2026 | Canvas pre-fills only empty blocks from the Idea Game | Never overwrites what a team wrote |

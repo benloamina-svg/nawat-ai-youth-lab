@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,10 +7,13 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>NAWAT AI Youth Lab — Creative initiatives & AI literacy for youth NGOs</title>
   <meta name="description" content="A free platform that helps youth NGOs, clubs and changemakers design creative, realistic initiatives and learn to use AI tools while doing it.">
-  <meta name="theme-color" content="#0A1628">
+  <meta name="theme-color" content="#050B16">
   <link rel="canonical" href="https://benloamina-svg.github.io/nawat-ai-youth-lab/">
+  <link rel="alternate" hreflang="en" href="https://benloamina-svg.github.io/nawat-ai-youth-lab/">
+  <link rel="alternate" hreflang="ar" href="https://benloamina-svg.github.io/nawat-ai-youth-lab/ar/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="NAWAT AI Youth Lab">
+  <meta property="og:locale" content="en_US">
   <meta property="og:title" content="NAWAT AI Youth Lab — Creative initiatives & AI literacy for youth NGOs">
   <meta property="og:description" content="A free platform that helps youth NGOs, clubs and changemakers design creative, realistic initiatives and learn to use AI tools while doing it.">
   <meta property="og:url" content="https://benloamina-svg.github.io/nawat-ai-youth-lab/">
@@ -25,7 +28,7 @@
     <div class="wrap header-inner">
       <a class="brand" href="index.html" aria-label="NAWAT AI Youth Lab — home">
         <img src="assets/img/nawat-logo.png" alt="" width="40" height="40">
-        <span class="brand-text">NAWAT AI<small>YOUTH LAB</small></span>
+        <span class="brand-text" lang="en">NAWAT AI<small>YOUTH LAB</small></span>
       </a>
       <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Open navigation">☰</button>
       <nav id="siteNav" class="site-nav" aria-label="Main">
@@ -35,6 +38,7 @@
         <a href="ai-toolkit.html">AI Toolkit</a>
         <a href="workshops.html">Workshops</a>
         <a href="about.html">About</a>
+        <a class="lang-switch" href="ar/index.html" lang="ar" hreflang="ar" aria-label="Arabic version">العربية</a>
       </nav>
     </div>
   </header>
@@ -156,6 +160,10 @@
           <h2>NAWAT AI Youth Lab</h2>
           <p>Helping youth NGOs, clubs and changemakers design creative initiatives and use AI tools responsibly. From Nucleus to Nation.</p>
           <p>In partnership with <strong>TIRYAQ NGO</strong> · Biskra, Algeria</p>
+          <div class="social">
+            <a class="button button-outline button-small" data-social="instagram" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/></svg> Instagram</a>
+            <a class="button button-outline button-small" data-social="facebook" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v7h4v-7h3l1-4h-4V8.5a.5.5 0 0 1 .5-.5z"/></svg> Facebook</a>
+          </div>
         </div>
         <div>
           <h2>Explore</h2>
@@ -173,6 +181,8 @@
           <ul>
             <li><a data-email href="about.html#contact">Email us</a></li>
             <li><a href="about.html#contact">Join our WhatsApp community</a></li>
+            <li><a data-social="instagram" href="#">Follow us on Instagram ↗</a></li>
+            <li><a data-social="facebook" href="#">Follow us on Facebook ↗</a></li>
             <li><a data-form="feedback" href="#">Give feedback ↗</a></li>
           </ul>
         </div>
@@ -184,6 +194,7 @@
     </div>
   </footer>
   <script src="assets/js/config.js"></script>
+  <script src="assets/js/i18n.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/constellation.js"></script>
 </body>

@@ -7,6 +7,8 @@
   if (!D || !form) return;
 
   const $ = (id) => document.getElementById(id);
+  const t = window.t;
+  const AR = !!window.NAWAT_RTL;
   const status = $('gameStatus');
   const out = $('ideaResult');
   let current = null; // last generated initiative
@@ -44,9 +46,9 @@
   const sugBox = $('problemSuggestions');
   function showSuggestions(themeKey) {
     sugBox.replaceChildren();
-    const t = D.themes[themeKey];
-    if (!t) { sugBox.textContent = 'Pick a theme to see suggestions.'; return; }
-    t.problems.forEach((p) => {
+    const th = D.themes[themeKey];
+    if (!th) { sugBox.textContent = t('pickTheme'); return; }
+    th.problems.forEach((p) => {
       const b = document.createElement('button');
       b.type = 'button'; b.className = 'suggestion'; b.textContent = p;
       b.addEventListener('click', () => { problemInput.value = p; problemInput.focus(); });
@@ -66,12 +68,12 @@
     const mat = D.materials[choice.material];
     const twist = choice.twist || pick(theme.twists, current && current.twist);
     const word = pick(theme.names, current && current.word);
-    const name = choice.name || `${word} ${fmt.suffix}`;
+    const name = choice.name || (D.suffixFirst ? `${fmt.suffix} ${word}` : `${word} ${fmt.suffix}`);
     const v = {
       theme: theme.label.toLowerCase(), target: D.targets[choice.target], skill: D.skills[choice.skill],
       problem: lowerFirst(choice.problem), twist, format: fmt.label.toLowerCase(), name,
-      aformat: (/^[aeiou]/i.test(fmt.label) ? 'an ' : 'a ') + fmt.label.toLowerCase(),
-      org: { Solo: 'solo youth initiative', Club: 'club', NGO: 'NGO' }[org.label] || org.label, materials: mat.label.toLowerCase()
+      aformat: AR ? fmt.label : (/^[aeiou]/i.test(fmt.label) ? 'an ' : 'a ') + fmt.label.toLowerCase(),
+      org: org.inText || org.label, materials: mat.label.toLowerCase()
     };
     v.Aformat = cap(v.aformat);
     current = {
@@ -95,7 +97,7 @@
   }
   function list(items, ordered) {
     const l = el(ordered ? 'ol' : 'ul');
-    items.forEach((t) => l.append(el('li', '', t)));
+    items.forEach((item) => l.append(el('li', '', item)));
     return l;
   }
 
@@ -111,8 +113,8 @@
     card.append(head);
 
     const facts = el('dl', 'idea-facts');
-    [['Problem', c.choice.problem], ['Who it helps', cap(v.target)], ['Skills built', cap(v.skill)], ['Signature activity', cap(c.twist)]]
-      .forEach(([k, t]) => { facts.append(el('dt', '', k), el('dd', '', t)); });
+    [[t('fProblem'), c.choice.problem], [t('fWho'), cap(v.target)], [t('fSkills'), cap(v.skill)], [t('fTwist'), cap(c.twist)]]
+      .forEach(([k, val]) => { facts.append(el('dt', '', k), el('dd', '', val)); });
     card.append(facts);
 
     const sec = (title, node, cls) => {
@@ -120,11 +122,11 @@
       s.append(el('h4', '', title), node);
       card.append(s);
     };
-    sec('Activity plan', list(c.steps, true));
-    sec('With what you have', el('p', '', c.resources));
-    sec('Zero-budget option', el('p', '', c.zero), 'zero');
-    sec('Team roles', list(c.roles));
-    sec('Success indicators', list(c.indicators));
+    sec(t('sPlan'), list(c.steps, true));
+    sec(t('sHave'), el('p', '', c.resources));
+    sec(t('sZero'), el('p', '', c.zero), 'zero');
+    sec(t('sRoles'), list(c.roles));
+    sec(t('sIndicators'), list(c.indicators));
 
     // AI prompts
     const pBox = $('promptList');
@@ -133,11 +135,11 @@
       const item = el('article', 'prompt-card');
       item.append(el('h4', '', `${i + 1}. ${p.title}`));
       const pre = el('p', 'prompt-text', p.text);
-      const btn = el('button', 'button button-small', 'Copy prompt');
+      const btn = el('button', 'button button-small', t('copyPrompt'));
       btn.type = 'button';
       btn.addEventListener('click', async () => {
         const ok = await window.NAWAT.copy(p.text);
-        window.NAWAT.say(status, ok ? 'Prompt copied. Paste it into ChatGPT, Claude or Google AI Studio.' : 'Copy failed: select the text and copy it manually.');
+        window.NAWAT.say(status, ok ? t('promptCopied') : t('promptCopyFailed'));
       });
       item.append(pre, btn);
       pBox.append(item);
@@ -152,7 +154,7 @@
     } catch (e) { /* storage blocked: canvas pre-fill just won't be offered */ }
 
     out.hidden = false;
-    window.NAWAT.say(status, `Your initiative "${c.name}" is ready.`);
+    window.NAWAT.say(status, t('ideaReady', { name: c.name }));
     $('ideaCard').focus({ preventScroll: true });
     out.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -160,13 +162,13 @@
   function asText() {
     const c = current;
     return [
-      `${c.name.toUpperCase()} — Initiative idea by NAWAT AI Youth Lab`, c.pitch, '',
-      `Problem: ${c.choice.problem}`, `Who it helps: ${cap(c.v.target)}`, `Skills built: ${cap(c.v.skill)}`, `Signature activity: ${cap(c.twist)}`, '',
-      'ACTIVITY PLAN', ...c.steps.map((s, i) => `${i + 1}. ${s}`), '',
-      'WITH WHAT YOU HAVE', c.resources, '', 'ZERO-BUDGET OPTION', c.zero, '',
-      'TEAM ROLES', ...c.roles.map((r) => `- ${r}`), '',
-      'SUCCESS INDICATORS', ...c.indicators.map((r) => `- ${r}`), '',
-      'DEVELOP IT WITH AI', ...c.prompts.map((p, i) => `${i + 1}. ${p.title}:\n${p.text}`)
+      `${c.name.toUpperCase()} — ${t('ideaByline')}`, c.pitch, '',
+      `${t('fProblem')}: ${c.choice.problem}`, `${t('fWho')}: ${cap(c.v.target)}`, `${t('fSkills')}: ${cap(c.v.skill)}`, `${t('fTwist')}: ${cap(c.twist)}`, '',
+      t('sPlan').toUpperCase(), ...c.steps.map((s, i) => `${i + 1}. ${s}`), '',
+      t('sHave').toUpperCase(), c.resources, '', t('sZero').toUpperCase(), c.zero, '',
+      t('sRoles').toUpperCase(), ...c.roles.map((r) => `- ${r}`), '',
+      t('sIndicators').toUpperCase(), ...c.indicators.map((r) => `- ${r}`), '',
+      t('sAI').toUpperCase(), ...c.prompts.map((p, i) => `${i + 1}. ${p.title}:\n${p.text}`)
     ].join('\n');
   }
 
@@ -176,7 +178,7 @@
     const missing = keys.filter((k) => !val(k));
     if (missing.length) {
       const first = form.querySelector(`input[name="${missing[0]}"]`);
-      window.NAWAT.say(status, `Please choose: ${missing.join(', ')}.`);
+      window.NAWAT.say(status, t('pleaseChoose', { list: missing.map((k) => t('k_' + k)).join(AR ? '، ' : ', ') }));
       first && first.focus();
       return;
     }
@@ -206,22 +208,22 @@
 
   $('copyIdea').addEventListener('click', async () => {
     const ok = await window.NAWAT.copy(asText());
-    window.NAWAT.say(status, ok ? 'Initiative copied to your clipboard.' : 'Copy is blocked in this browser. Use Print instead.');
+    window.NAWAT.say(status, ok ? t('ideaCopied') : t('copyBlocked'));
   });
   $('printIdea').addEventListener('click', () => window.print());
   $('imageIdea').addEventListener('click', () => {
     const c = current;
     window.NAWAT.downloadCard({
-      label: 'Initiative Idea Game', title: c.name, subtitle: c.pitch, filename: window.NAWAT.slug(c.name),
+      label: t('gameLabel'), title: c.name, subtitle: c.pitch, filename: window.NAWAT.slug(c.name),
       sections: [
-        { heading: 'Problem', lines: [c.choice.problem] },
-        { heading: 'Who it helps · Skills', lines: [`${cap(c.v.target)} · ${cap(c.v.skill)}`] },
-        { heading: 'Activity plan', lines: c.steps },
-        { heading: 'Zero-budget option', lines: [cap(c.zero.replace(/^Zero-budget version: /, ''))] },
-        { heading: 'Success indicators', lines: c.indicators }
+        { heading: t('fProblem'), lines: [c.choice.problem] },
+        { heading: t('sWhoSkills'), lines: [`${cap(c.v.target)} · ${cap(c.v.skill)}`] },
+        { heading: t('sPlan'), lines: c.steps },
+        { heading: t('sZero'), lines: [cap(c.zero.replace(/^[^:：]{0,40}[:：]\s*/, ''))] },
+        { heading: t('sIndicators'), lines: c.indicators }
       ]
     });
-    window.NAWAT.say(status, 'Image downloaded. Share it with your team.');
+    window.NAWAT.say(status, t('imageDone'));
   });
   $('newIdea').addEventListener('click', () => {
     out.hidden = true; current = null;

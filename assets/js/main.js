@@ -2,6 +2,8 @@
 (function () {
   'use strict';
   const cfg = window.SITE_CONFIG || {};
+  const t = window.t || ((k) => k);
+  const RTL = !!window.NAWAT_RTL;
 
   /* ---- Mobile navigation ---- */
   const toggle = document.getElementById('menuToggle');
@@ -10,7 +12,7 @@
     const setOpen = (open) => {
       nav.classList.toggle('open', open);
       toggle.setAttribute('aria-expanded', String(open));
-      toggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+      toggle.setAttribute('aria-label', open ? t('navClose') : t('navOpen'));
     };
     toggle.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
     nav.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
@@ -33,13 +35,18 @@
       el.removeAttribute('href');
       el.classList.add('is-disabled');
       el.setAttribute('aria-disabled', 'true');
-      el.textContent = el.textContent.replace(/[↗→]/g, '').trim() + ' (link coming soon)';
+      el.textContent = el.textContent.replace(/[↗→←]/g, '').trim() + t('linkSoon');
     }
   });
   document.querySelectorAll('[data-email]').forEach((el) => {
     if (!cfg.contactEmail) return;
     el.href = 'mailto:' + cfg.contactEmail;
     if (!el.textContent.trim()) el.textContent = cfg.contactEmail;
+  });
+  document.querySelectorAll('[data-social]').forEach((el) => {
+    const url = cfg[el.dataset.social + 'Url'];
+    if (url && /^https:\/\//.test(url)) { el.href = url; el.target = '_blank'; el.rel = 'noopener noreferrer'; }
+    else el.hidden = true;
   });
   document.querySelectorAll('[data-site-url]').forEach((el) => { el.textContent = cfg.siteUrl || ''; });
   document.querySelectorAll('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
@@ -73,7 +80,7 @@
 
   /* ---- Image card (PNG) drawn with the native Canvas API ---- */
   const C = { navy: '#0A1628', surface: '#0F2034', border: '#1E3A55', emerald: '#00C07A', gold: '#F0B429', sky: '#EBF4FF', muted: '#9FB6CC' };
-  const FONT = 'Calibri, Inter, "Segoe UI", Arial, sans-serif';
+  const FONT = RTL ? '"Noto Kufi Arabic", Inter, Arial, sans-serif' : 'Inter, Calibri, "Segoe UI", Arial, sans-serif';
 
   function wrap(ctx, text, maxW) {
     const out = [];
@@ -109,7 +116,8 @@
    * Build and download a branded PNG card.
    * data = { label, title, subtitle, sections: [{ heading, lines: [string] }], filename }
    */
-  NAWAT.downloadCard = function (data) {
+  NAWAT.downloadCard = async function (data) {
+    try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (e) { /* draw anyway */ }
     const W = 1080, PAD = 80, inner = W - PAD * 2;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -125,7 +133,7 @@
       ctx.font = `400 27px ${FONT}`;
       const lines = [];
       s.lines.filter(Boolean).forEach((l, i, arr) => {
-        const prefix = arr.length > 1 ? '•  ' : '';
+        const prefix = arr.length > 1 ? '•  ' : '';  // bullet is placed at the start in both directions
         wrap(ctx, prefix + l, inner - 30).forEach((w) => lines.push(w));
       });
       layout.push({ heading: s.heading, lines });
@@ -134,6 +142,9 @@
     h += 120;
 
     canvas.width = W; canvas.height = h;
+    // Right-to-left support: text starts at the right edge for Arabic.
+    const X = RTL ? W - PAD : PAD;
+    const setDir = () => { ctx.direction = RTL ? 'rtl' : 'ltr'; ctx.textAlign = RTL ? 'right' : 'left'; };
 
     // Background
     ctx.fillStyle = C.navy; ctx.fillRect(0, 0, W, h);
@@ -141,33 +152,37 @@
     [220, 320, 420].forEach((r) => { ctx.beginPath(); ctx.arc(W, 0, r, 0, 7); ctx.stroke(); });
 
     // Header
-    drawMark(ctx, PAD + 34, 100, 34);
+    drawMark(ctx, RTL ? W - PAD - 34 : PAD + 34, 100, 34);
     ctx.textBaseline = 'alphabetic';
+    setDir();
+    const HX = RTL ? W - PAD - 90 : PAD + 90;
     ctx.fillStyle = C.sky; ctx.font = `700 26px ${FONT}`;
-    ctx.fillText('N A W A T   A I', PAD + 90, 96);
+    ctx.direction = 'ltr'; ctx.textAlign = RTL ? 'right' : 'left';
+    ctx.fillText(t('cardBrand'), HX, 96);
+    setDir();
     ctx.fillStyle = C.emerald; ctx.font = `700 15px ${FONT}`;
-    ctx.fillText((data.label || 'YOUTH LAB').toUpperCase(), PAD + 90, 124);
+    ctx.fillText((data.label || 'YOUTH LAB').toUpperCase(), HX, 124);
 
     let y = 230;
     ctx.fillStyle = C.sky; ctx.font = `700 54px ${FONT}`;
-    titleLines.forEach((l) => { ctx.fillText(l, PAD, y); y += 64; });
+    titleLines.forEach((l) => { ctx.fillText(l, X, y); y += 64; });
     ctx.fillStyle = C.muted; ctx.font = `400 28px ${FONT}`;
-    subLines.forEach((l) => { ctx.fillText(l, PAD, y); y += 40; });
-    ctx.fillStyle = C.emerald; ctx.fillRect(PAD, y, 60, 4); y += 40;
+    subLines.forEach((l) => { ctx.fillText(l, X, y); y += 40; });
+    ctx.fillStyle = C.emerald; ctx.fillRect(RTL ? W - PAD - 60 : PAD, y, 60, 4); y += 40;
 
     layout.forEach((s) => {
       y += 20;
       ctx.fillStyle = C.emerald; ctx.font = `700 19px ${FONT}`;
-      ctx.fillText(s.heading.toUpperCase(), PAD, y); y += 40;
+      ctx.fillText(s.heading.toUpperCase(), X, y); y += 40;
       ctx.fillStyle = C.sky; ctx.font = `400 27px ${FONT}`;
-      s.lines.forEach((l) => { ctx.fillText(l, PAD + 4, y); y += 38; });
+      s.lines.forEach((l) => { ctx.fillText(l, RTL ? X - 4 : X + 4, y); y += 38; });
       y += 6;
     });
 
     // Footer
     ctx.fillStyle = 'rgba(0,192,122,.25)'; ctx.fillRect(PAD, h - 80, inner, 1);
     ctx.fillStyle = '#7A98B2'; ctx.font = `700 16px ${FONT}`;
-    ctx.fillText('NAWAT AI YOUTH LAB  ·  PROBLEM → AI → SOLUTION → ACTION', PAD, h - 42);
+    ctx.fillText(t('cardFooter'), X, h - 42);
 
     canvas.toBlob((blob) => {
       if (!blob) return;
@@ -186,7 +201,7 @@
       if (!src) return;
       const ok = await NAWAT.copy(src.textContent.trim());
       const old = btn.textContent;
-      btn.textContent = ok ? 'Copied ✓' : 'Copy failed';
+      btn.textContent = ok ? t('copied') : t('copyFailed');
       setTimeout(() => { btn.textContent = old; }, 1800);
     });
   });

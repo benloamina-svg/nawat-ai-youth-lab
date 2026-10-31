@@ -10,16 +10,19 @@
 - [x] Google Form links added (showcase + feedback)
 - [x] Plan it page: Initiative Canvas (13 blocks, pre-fill from game, autosave, copy/print/image) + SMART Court + SMART builder
 - [x] Design v2 (void style, constellation hero, Inter), responsive retest
+- [x] Instagram + Facebook links (footer, About)
+- [x] Full Arabic RTL version (/ar/), bilingual scripts and images, tested
 - [x] Docs, .gitignore, GitHub Actions deploy workflow, Claude skill
 
 ## Waiting on product owner ⏳
 - [ ] Create repo `benloamina-svg/nawat-ai-youth-lab` and approve the push
 - [ ] Verify live site, run Lighthouse, scan QR codes
+- [x] Submission pack (docs/SUBMISSION.md), demo script, 8-slide pitch PDF, team section in README
 - [ ] Record 3-minute demo video; submit
 
 ## Next (after hackathon)
 - [ ] Facilitator mode (full-screen steps + timer)
 - [ ] GoatCounter privacy-friendly analytics
-- [ ] Arabic and French versions
+- [ ] French version
 - [ ] Showcase gallery of submitted ideas
 - [ ] More templates contributed by partner NGOs

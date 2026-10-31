@@ -6,6 +6,8 @@
   if (!P || !grid) return;
   const $ = (id) => document.getElementById(id);
   const N = window.NAWAT;
+  const t = window.t;
+  const AR = !!window.NAWAT_RTL;
   const status = $('canvasStatus');
   const KEY = 'nawat-canvas-v1';
 
@@ -23,7 +25,7 @@
     label.append(num, document.createTextNode(' ' + b.title));
     const hint = document.createElement('small'); hint.id = 'hint-' + b.id; hint.textContent = b.hint;
     const ta = document.createElement('textarea');
-    Object.assign(ta, { id: 'canvas-' + b.id, rows: b.wide ? 4 : 3, maxLength: 1200 });
+    Object.assign(ta, { id: 'canvas-' + b.id, rows: b.wide ? 4 : 3, maxLength: 1200, dir: 'auto' });
     ta.setAttribute('aria-describedby', hint.id);
     box.append(label, hint, ta);
     grid.append(box);
@@ -33,20 +35,20 @@
   const fields = () => P.canvas.map((b) => [b, $('canvas-' + b.id)]);
 
   /* Grow each box to fit its text (screen and print). */
-  function autosize(t) { t.style.height = 'auto'; t.style.height = Math.max(t.scrollHeight + 2, 90) + 'px'; }
-  const sizeAll = () => fields().forEach(([, t]) => autosize(t));
+  function autosize(ta) { ta.style.height = 'auto'; ta.style.height = Math.max(ta.scrollHeight + 2, 90) + 'px'; }
+  const sizeAll = () => fields().forEach(([, ta]) => autosize(ta));
   window.addEventListener('beforeprint', sizeAll);
 
   function progress() {
-    const filled = fields().filter(([, t]) => t.value.trim()).length;
-    $('canvasProgress').textContent = `${filled} / ${P.canvas.length} blocks filled`;
+    const filled = fields().filter(([, ta]) => ta.value.trim()).length;
+    $('canvasProgress').textContent = t('blocksFilled', { n: filled, total: P.canvas.length });
     $('canvasBar').style.width = Math.round((filled / P.canvas.length) * 100) + '%';
-    fields().forEach(([, t]) => t.parentElement.classList.toggle('filled', !!t.value.trim()));
+    fields().forEach(([, ta]) => ta.parentElement.classList.toggle('filled', !!ta.value.trim()));
     sizeAll();
   }
   function save() {
     const data = { name: nameInput.value };
-    fields().forEach(([b, t]) => { data[b.id] = t.value; });
+    fields().forEach(([b, ta]) => { data[b.id] = ta.value; });
     write(KEY, data);
     progress();
   }
@@ -54,7 +56,7 @@
     const d = read(KEY);
     if (d) {
       nameInput.value = d.name || '';
-      fields().forEach(([b, t]) => { if (typeof d[b.id] === 'string') t.value = d[b.id]; });
+      fields().forEach(([b, ta]) => { if (typeof d[b.id] === 'string') ta.value = d[b.id]; });
     }
     progress();
   }
@@ -65,12 +67,12 @@
   /* Fill empty blocks from the last Idea Game card */
   function fillFromGame() {
     const idea = read('nawat-last-idea');
-    if (!idea) { N.say(status, 'No Idea Game card found on this device yet. Generate one first in the Initiative Idea Game.'); return; }
+    if (!idea) { N.say(status, t('noGameCard')); return; }
     const map = {
       problem: idea.problem,
       target: idea.target,
       solution: `${idea.name}: ${idea.pitch}`,
-      goal: `Help ${idea.target.toLowerCase()} tackle "${idea.problem.toLowerCase()}" while building ${idea.skill}.`,
+      goal: t('goalFromIdea', { target: AR ? idea.target : idea.target.toLowerCase(), problem: AR ? idea.problem : idea.problem.toLowerCase(), skill: idea.skill }),
       activities: idea.steps.map((s, i) => `${i + 1}. ${s}`).join('\n'),
       team: idea.roles.map((r) => `- ${r}`).join('\n'),
       resources: idea.resources,
@@ -79,38 +81,38 @@
     };
     let n = 0;
     Object.entries(map).forEach(([id, v]) => {
-      const t = $('canvas-' + id);
-      if (t && !t.value.trim() && v) { t.value = v; n++; }
+      const box = $('canvas-' + id);
+      if (box && !box.value.trim() && v) { box.value = v; n++; }
     });
     if (!nameInput.value.trim()) nameInput.value = idea.name;
     save();
-    N.say(status, n ? `Filled ${n} empty blocks from "${idea.name}". Now write your SMART objectives below.` : 'Those blocks already have text, so nothing was replaced.');
+    N.say(status, n ? t('filledFrom', { n, name: idea.name }) : t('nothingReplaced'));
   }
   $('canvasFromGame').addEventListener('click', fillFromGame);
   if (new URLSearchParams(location.search).get('from') === 'game') fillFromGame();
 
-  const entries = () => fields().map(([b, t]) => [b.title, t.value.trim()]).filter(([, v]) => v);
+  const entries = () => fields().map(([b, ta]) => [b.title, ta.value.trim()]).filter(([, v]) => v);
   $('canvasCopy').addEventListener('click', async () => {
-    const text = `${(nameInput.value || 'Our initiative').toUpperCase()} — Initiative Canvas\n\n` +
-      entries().map(([h, v]) => `${h.toUpperCase()}\n${v}`).join('\n\n') + '\n\nMade with NAWAT AI Youth Lab';
+    const text = `${(nameInput.value || t('ourInitiative')).toUpperCase()} — ${t('canvasTitle')}\n\n` +
+      entries().map(([h, v]) => `${h.toUpperCase()}\n${v}`).join('\n\n') + `\n\n${t('madeWith')}`;
     const ok = await N.copy(text);
-    N.say(status, ok ? 'Canvas copied.' : 'Copy is blocked in this browser. Use Print instead.');
+    N.say(status, ok ? t('canvasCopied') : t('copyBlocked'));
   });
   $('canvasPrint').addEventListener('click', () => { document.body.classList.add('printing-canvas'); window.print(); });
   window.addEventListener('afterprint', () => document.body.classList.remove('printing-canvas'));
   $('canvasImage').addEventListener('click', () => {
-    if (!entries().length) { N.say(status, 'Fill at least one block first.'); return; }
+    if (!entries().length) { N.say(status, t('fillOne')); return; }
     N.downloadCard({
-      label: 'Initiative Canvas', title: nameInput.value.trim() || 'Our initiative',
-      subtitle: `${entries().length} of 13 blocks completed`, filename: 'canvas-' + N.slug(nameInput.value || 'initiative'),
+      label: t('canvasTitle'), title: nameInput.value.trim() || t('ourInitiative'),
+      subtitle: t('blocksDone', { n: entries().length }), filename: 'canvas-' + N.slug(nameInput.value || 'initiative'),
       sections: entries().map(([heading, v]) => ({ heading, lines: v.split('\n') }))
     });
-    N.say(status, 'Canvas image downloaded.');
+    N.say(status, t('canvasImage'));
   });
   $('canvasClear').addEventListener('click', () => {
-    if (!confirm('Clear the whole canvas on this device?')) return;
-    nameInput.value = ''; fields().forEach(([, t]) => { t.value = ''; });
-    save(); N.say(status, 'Canvas cleared.');
+    if (!confirm(t('clearCanvas'))) return;
+    nameInput.value = ''; fields().forEach(([, ta]) => { ta.value = ''; });
+    save(); N.say(status, t('canvasCleared'));
   });
 
   /* ========================= SMART COURT ======================== */
@@ -137,9 +139,9 @@
   function showRound() {
     const r = P.court[round];
     answered = false;
-    $('courtRound').textContent = `Goal ${round + 1} of ${P.court.length}`;
-    $('courtScore').textContent = `Score: ${score}`;
-    courtGoal.textContent = `“${r.goal}”`;
+    $('courtRound').textContent = t('goalOf', { n: round + 1, total: P.court.length });
+    $('courtScore').textContent = t('score', { n: score });
+    courtGoal.textContent = t('quote', { text: r.goal });
     toggles.querySelectorAll('button').forEach((b) => { b.setAttribute('aria-pressed', 'false'); b.classList.remove('right', 'wrong', 'missed'); });
     courtFeedback.hidden = true; courtFeedback.replaceChildren();
     $('courtCheck').hidden = false; $('courtNext').hidden = true;
@@ -155,21 +157,21 @@
       if (p && f) b.classList.add('right'); else if (p && !f) b.classList.add('wrong'); else if (!p && f) b.classList.add('missed');
     });
     const h = document.createElement('p'); h.className = 'verdict ' + (correct ? 'ok' : 'ko');
-    h.textContent = correct ? 'Correct verdict! ✓' : `Not quite. It fails: ${r.fails.length ? r.fails.map((l) => l + ' (' + P.letters[l].name + ')').join(', ') : 'nothing — it is already SMART'}.`;
+    h.textContent = correct ? t('correct') : t('notQuite', { list: r.fails.length ? r.fails.map((l) => l + ' (' + P.letters[l].name + ')').join(AR ? '، ' : ', ') : t('alreadySmart') });
     const why = document.createElement('p'); why.textContent = r.why;
     const fx = document.createElement('p'); fx.className = 'fixed';
-    const fl = document.createElement('strong'); fl.textContent = 'SMART version: ';
+    const fl = document.createElement('strong'); fl.textContent = t('smartVersion');
     fx.append(fl, document.createTextNode(r.fixed));
     courtFeedback.append(h, why, fx); courtFeedback.hidden = false;
-    $('courtScore').textContent = `Score: ${score}`;
+    $('courtScore').textContent = t('score', { n: score });
     $('courtCheck').hidden = true; $('courtNext').hidden = false;
-    $('courtNext').textContent = round === P.court.length - 1 ? 'See my result' : 'Next goal →';
+    $('courtNext').textContent = round === P.court.length - 1 ? t('seeResult') : t('nextGoal');
     $('courtNext').focus();
   });
   $('courtNext').addEventListener('click', () => {
     if (round < P.court.length - 1) { round++; showRound(); return; }
-    const msg = score === P.court.length ? 'Perfect score — you are a SMART judge!' : score >= 4 ? 'Great job! You can spot weak goals.' : 'Good start. Read the SMART versions again and replay.';
-    courtGoal.textContent = `You scored ${score} / ${P.court.length}. ${msg}`;
+    const msg = score === P.court.length ? t('perfect') : score >= 4 ? t('great') : t('goodStart');
+    courtGoal.textContent = t('scored', { n: score, total: P.court.length, msg });
     courtFeedback.hidden = true; toggles.hidden = true;
     $('courtNext').hidden = true; $('courtReplay').hidden = false;
     $('courtReplay').focus();
@@ -184,7 +186,7 @@
   function goalText() {
     const when = sb('when'), who = sb('who'), where = sb('where'), what = sb('what'), measure = sb('measure');
     if (!who && !what) return '';
-    return `${when ? 'By ' + when + ', ' : ''}${who || '[who]'}${where ? ' in ' + where : ''} will ${what || '[do what]'}${measure ? ', measured by ' + measure : ''}.`;
+    return (when ? t('gBy', { when }) : '') + (who || t('gWho')) + (where ? t('gIn', { where }) : '') + t('gWill', { what: what || t('gWhat') }) + (measure ? t('gMeasured', { measure }) : '') + t('gEnd');
   }
   function check() {
     const ok = {
@@ -197,12 +199,12 @@
     L.forEach((l) => {
       const badge = $('badge-' + l);
       badge.classList.toggle('ok', ok[l]);
-      badge.setAttribute('aria-label', `${P.letters[l].name}: ${ok[l] ? 'yes' : 'not yet'}`);
+      badge.setAttribute('aria-label', `${P.letters[l].name}: ${ok[l] ? t('yes') : t('notYet')}`);
     });
     const count = L.filter((l) => ok[l]).length;
     const text = goalText();
-    $('smartPreview').textContent = text || 'Your goal will appear here as you type.';
-    $('smartVerdict').textContent = count === 5 ? 'Your goal is SMART ✓' : `${count} / 5 — ${L.filter((l) => !ok[l]).map((l) => P.letters[l].question).join(' ')}`;
+    $('smartPreview').textContent = text || t('goalPlaceholder');
+    $('smartVerdict').textContent = count === 5 ? t('isSmart') : `${count} / 5 — ${L.filter((l) => !ok[l]).map((l) => P.letters[l].question).join(' ')}`;
     return { count, text };
   }
   $('smartForm').addEventListener('input', check);
@@ -211,15 +213,15 @@
 
   $('smartToCanvas').addEventListener('click', () => {
     const { count, text } = check();
-    if (!text) { N.say($('smartStatus'), 'Write your goal first.'); return; }
-    const t = $('canvas-smart');
-    t.value = (t.value.trim() ? t.value.trim() + '\n' : '') + '- ' + text;
+    if (!text) { N.say($('smartStatus'), t('writeFirst')); return; }
+    const box = $('canvas-smart');
+    box.value = (box.value.trim() ? box.value.trim() + '\n' : '') + '- ' + text;
     save();
-    N.say($('smartStatus'), count === 5 ? 'Added to block 05 of your canvas.' : `Added to the canvas (${count}/5 SMART — you can improve it later).`);
+    N.say($('smartStatus'), count === 5 ? t('addedToCanvas') : t('addedPartial', { n: count }));
   });
   $('smartCopy').addEventListener('click', async () => {
     const { text } = check();
     const ok = text && await N.copy(text);
-    N.say($('smartStatus'), ok ? 'Goal copied.' : 'Write your goal first.');
+    N.say($('smartStatus'), ok ? t('goalCopied') : t('writeFirst'));
   });
 })();

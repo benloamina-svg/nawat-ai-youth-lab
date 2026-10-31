@@ -7,7 +7,8 @@ Static website (HTML + CSS + vanilla JS) on GitHub Pages. Product owner: Amina B
 - No secrets anywhere. No AI API calls. No cookies or tracking.
 - Render user text with `textContent` only. Never use `innerHTML` with user input.
 - No inline `<script>` or `style=""`: the CSP meta tag (`script-src 'self'; style-src 'self'`) blocks them.
-- Header/footer/CSP are duplicated in each `.html` page: change all seven together.
+- Header/footer/CSP are duplicated in each `.html` page (7 English + 6 Arabic in `/ar/`): change all together, in both languages.
+- Every user-facing string in JS goes through `t()` (`assets/js/i18n.js`), with English and Arabic. Never name a local variable `t`.
 - Follow `docs/DESIGN_SYSTEM.md` (v2: navy void, weight-400 headlines, emerald pills only for main actions, gold labels). Brand name is always NAWAT / نوات.
 - Ask the product owner before pushing, changing repo visibility or any public action.
 
@@ -16,6 +17,7 @@ Static website (HTML + CSS + vanilla JS) on GitHub Pages. Product owner: Amina B
 - `assets/data/game-data.js` — all Idea Game content (templates use `{theme} {target} {skill} {problem} {twist} {format}`)
 - `assets/js/main.js` — nav, copy helper, canvas PNG card (`NAWAT.downloadCard`)
 - `assets/data/planning-data.js` — canvas blocks and SMART Court goals
+- `assets/data/ar/` — Arabic versions of both data files (same keys)
 - `assets/js/game.js`, `builder.js`, `planning.js`, `poster.js` — one module per feature
 - See `docs/ARCHITECTURE.md` for details.
 

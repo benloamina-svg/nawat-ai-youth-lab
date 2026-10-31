@@ -23,6 +23,10 @@ Live site: https://benloamina-svg.github.io/nawat-ai-youth-lab/
 | `about.html` | Founder, NAWAT AI × TIRYAQ, email and WhatsApp QR |
 | `poster.html` | Printable A4 poster with a QR code to the site |
 
+## Languages
+
+English at the root (`/`) and a full Arabic right-to-left version in `/ar/` (same features). A switch in the header moves between twin pages. Interface messages live in `assets/js/i18n.js`; Arabic game and planning content in `assets/data/ar/`.
+
 ## Run it locally
 
 No installation needed.
@@ -44,6 +48,9 @@ python3 -m http.server 8000
 | Google Form links, contact email, site URL | `assets/js/config.js` |
 | Game themes, problems, formats, prompts, Volunteer Passport example | `assets/data/game-data.js` |
 | Canvas blocks, SMART Court goals | `assets/data/planning-data.js` |
+| Arabic content for the game and planning tools | `assets/data/ar/` |
+| Button and message texts (English + Arabic) | `assets/js/i18n.js` |
+| Instagram / Facebook links | `assets/js/config.js` |
 | Page text | the matching `.html` file |
 | Colours and layout | `assets/css/styles.css` (tokens at the top) |
 
@@ -78,9 +85,17 @@ If you use a different repository name, update `siteUrl` in `assets/js/config.js
 
 `CLAUDE.md` (AI assistant guide) · `docs/PRD.md` · `docs/DESIGN_SYSTEM.md` · `docs/ARCHITECTURE.md` · `docs/TASKS.md` · `docs/TESTING.md` · `docs/DECISIONS.md` · `progress.md`
 
+## Team and who built what
+
+| Who | What they did |
+|---|---|
+| **Amina Benlouanas** — founder, NAWAT AI Youth Lab | Product owner: problem and insight from field work in Biskra, requirements (`docs/PRD.md`), workshop methodology, all content and initiative templates, design direction, Google Forms, testing and publishing. |
+| **Claude (Anthropic), AI assistant** | Development partner: wrote the HTML/CSS/JavaScript and documentation from Amina's requirements, ran automated browser tests. Disclosed openly in the spirit of the platform: use AI, don't hide it. |
+
+Partner: **TIRYAQ NGO** (Biskra) — the Initiative Canvas and SMART game are based on its participant worksheets.
+
+Hackathon submission texts: `docs/SUBMISSION.md` · demo script: `docs/DEMO_SCRIPT.md` · pitch deck: `docs/NAWAT-AI-Youth-Lab-pitch.pdf`
+
 ## Credits
 
-Font: Inter (SIL Open Font License, `assets/fonts/OFL-LICENSE.txt`).
-
-
-Built by **Amina Benlouanas**, founder of NAWAT AI Youth Lab, in partnership with **TIRYAQ NGO** (Biskra, Algeria). Licence: MIT (see `LICENSE`).
+Fonts: Inter and Noto Kufi Arabic (SIL Open Font License, `assets/fonts/`). Licence: MIT (see `LICENSE`).

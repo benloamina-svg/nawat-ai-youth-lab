@@ -23,6 +23,10 @@
 | SMART Court 6 rounds | Correct scoring, feedback, replay |
 | SMART builder | 5/5 badges, goal added to canvas, survives reload |
 | Canvas image + print | PNG downloaded; print shows only the canvas on white |
+| Arabic: 6 pages at 360/768/1280 | No errors, no sideways scroll, RTL layout, Arabic font loaded |
+| Arabic: game, 25 random ideas | No leftover placeholders; Volunteer Passport = «جواز التطوع» |
+| Arabic: canvas, SMART Court, builder, images | All work; PNG text right-aligned |
+| Language switch / social links | Twin pages linked; Instagram + Facebook open in new tab |
 | All 2,520 game template combinations | No leftover placeholders; "an ongoing programme" grammar |
 
 ## Manual checklist before each release
