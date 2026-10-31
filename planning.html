@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Initiative Canvas & SMART Goals Game — NAWAT AI Youth Lab</title>
+  <meta name="description" content="Plan your youth initiative on a one-page canvas with 13 blocks, and learn to write SMART goals with a quick game and a live goal builder.">
+  <meta name="theme-color" content="#0A1628">
+  <link rel="canonical" href="https://benloamina-svg.github.io/nawat-ai-youth-lab/planning.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="NAWAT AI Youth Lab">
+  <meta property="og:title" content="Initiative Canvas & SMART Goals Game — NAWAT AI Youth Lab">
+  <meta property="og:description" content="Plan your youth initiative on a one-page canvas with 13 blocks, and learn to write SMART goals with a quick game and a live goal builder.">
+  <meta property="og:url" content="https://benloamina-svg.github.io/nawat-ai-youth-lab/planning.html">
+  <meta property="og:image" content="https://benloamina-svg.github.io/nawat-ai-youth-lab/assets/img/nawat-logo.png">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html" aria-label="NAWAT AI Youth Lab — home">
+        <img src="assets/img/nawat-logo.png" alt="" width="40" height="40">
+        <span class="brand-text">NAWAT AI<small>YOUTH LAB</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Open navigation">☰</button>
+      <nav id="siteNav" class="site-nav" aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="initiative-game.html" class="nav-cta">Play the Idea Game</a>
+        <a href="planning.html">Plan it</a>
+        <a href="ai-toolkit.html">AI Toolkit</a>
+        <a href="workshops.html">Workshops</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero pattern print-hide">
+      <div class="wrap">
+        <p class="eyebrow">Plan it · Based on TIRYAQ NGO initiative worksheets</p>
+        <h1 class="title-xl">From idea to <span class="em">one-page plan.</span></h1>
+        <p class="lede">Put your whole initiative on one canvas — from problem to next step — and learn to turn “we want success” into SMART goals by playing.</p>
+        <div class="actions"><a class="button" href="#canvas">Open the canvas ↓</a><a class="button button-outline" href="#smart">Play the SMART game</a></div>
+        <p class="flow muted">Problem → Target group → Solution → Goal → SMART objectives → Activities → Team → Resources → Budget → Indicators → Communication → Documentation → Next step</p>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="canvas" aria-labelledby="canvas-title">
+      <div class="wrap">
+        <div class="section-head print-hide">
+          <p class="eyebrow">Tool 1 · Initiative Canvas</p>
+          <h2 class="title-lg" id="canvas-title">Your initiative <span class="em">on one page</span></h2>
+          <p class="muted">Saved automatically on this device only. Start from scratch, or pre-fill the empty blocks from your last Idea Game card.</p>
+        </div>
+        <form id="canvasForm" class="panel" novalidate>
+          <div class="canvas-top">
+            <label class="field canvas-name" for="canvasName">Initiative name<input id="canvasName" type="text" maxlength="80" placeholder="Example: Volunteer Passport"></label>
+            <div class="canvas-progress print-hide">
+              <span id="canvasProgress">0 / 13 blocks filled</span>
+              <div class="bar" aria-hidden="true"><span id="canvasBar"></span></div>
+            </div>
+          </div>
+          <div class="canvas-grid" id="canvasGrid"></div>
+          <div class="actions print-hide">
+            <button class="button" type="button" id="canvasFromGame">Fill from my Idea Game card</button>
+            <button class="button button-outline" type="button" id="canvasCopy">Copy</button>
+            <button class="button button-outline" type="button" id="canvasPrint">Print</button>
+            <button class="button button-outline" type="button" id="canvasImage">Download as image</button>
+            <button class="button button-outline" type="button" id="canvasClear">Clear</button>
+          </div>
+          <p class="status print-hide" id="canvasStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="section print-hide" id="smart" aria-labelledby="smart-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Tool 2 · SMART Goals game</p>
+          <h2 class="title-lg" id="smart-title">Turn “we want success” into <span class="em">goals you can measure.</span></h2>
+          <div class="smart-legend">
+            <span><b>S</b> Specific</span><span><b>M</b> Measurable</span><span><b>A</b> Achievable</span><span><b>R</b> Relevant</span><span><b>T</b> Time-bound</span>
+          </div>
+        </div>
+        <div class="grid grid-2 smart-tools">
+          <div class="panel court">
+            <p class="pill gold">Round 1 · SMART Court</p>
+            <h3>Judge the goal</h3>
+            <p class="muted">Select every letter the goal <strong>fails</strong>. If it is already SMART, select none.</p>
+            <div class="court-meta"><span id="courtRound"></span><span id="courtScore"></span></div>
+            <p class="court-goal" id="courtGoal" aria-live="polite"></p>
+            <div class="letter-toggles" id="courtToggles" role="group" aria-label="Letters this goal fails"></div>
+            <div class="court-feedback" id="courtFeedback" hidden aria-live="polite"></div>
+            <div class="actions">
+              <button class="button" type="button" id="courtCheck">Give my verdict</button>
+              <button class="button" type="button" id="courtNext" hidden>Next goal →</button>
+              <button class="button button-outline" type="button" id="courtReplay" hidden>Play again ↻</button>
+            </div>
+          </div>
+          <form class="panel" id="smartForm" novalidate>
+            <p class="pill">Round 2 · SMART Builder</p>
+            <h3>Write your own SMART goal</h3>
+            <div class="smart-badges" aria-label="SMART check">
+              <span class="smart-badge" id="badge-S">S</span><span class="smart-badge" id="badge-M">M</span><span class="smart-badge" id="badge-A">A</span><span class="smart-badge" id="badge-R">R</span><span class="smart-badge" id="badge-T">T</span>
+            </div>
+
+            <div class="form-grid">
+              <label class="field" for="smart-who">Who? <small>The exact group</small><input id="smart-who" type="text" maxlength="120" placeholder="25 university students"></label>
+              <label class="field" for="smart-where">Where?<input id="smart-where" type="text" maxlength="120" placeholder="Biskra"></label>
+            </div>
+            <label class="field" for="smart-what">Will do / achieve what?<input id="smart-what" type="text" maxlength="160" placeholder="complete 4 volunteering activities in their Volunteer Passport"></label>
+            <div class="form-grid">
+              <label class="field" for="smart-measure">Measured by? <small>A number or a check</small><input id="smart-measure" type="text" maxlength="120" placeholder="80% completion on attendance sheets"></label>
+              <label class="field" for="smart-when">By when?<input id="smart-when" type="text" maxlength="60" placeholder="30 June 2027"></label>
+            </div>
+            <label class="field" for="smart-need">Which need does it serve? <small>Relevant</small><input id="smart-need" type="text" maxlength="160" placeholder="Volunteering is not recognised as real experience"></label>
+            <label class="check-field"><input id="smart-achievable" type="checkbox"> We have the time, team and resources to do this (Achievable)</label>
+
+            <div class="smart-preview"><p class="eyebrow">Your goal</p><p id="smartPreview"></p><p class="muted small" id="smartVerdict" aria-live="polite"></p></div>
+            <div class="actions">
+              <button class="button" type="button" id="smartToCanvas">Add to my canvas ↑</button>
+              <button class="button button-outline" type="button" id="smartCopy">Copy goal</button>
+            </div>
+            <p class="status" id="smartStatus" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+        <div class="card accent-gold chain">
+          <h3>Remember the chain</h3>
+          <p class="muted"><strong>Overall goal</strong> (direction) → <strong>objective</strong> (specific change) → <strong>activity</strong> (what we do) → <strong>output</strong> (what we produce) → <strong>outcome</strong> (what changes for people) → <strong>impact</strong> (the long-term change). Never organise an activity just because it looks nice: every activity must serve an objective.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <h2>NAWAT AI Youth Lab</h2>
+          <p>Helping youth NGOs, clubs and changemakers design creative initiatives and use AI tools responsibly. From Nucleus to Nation.</p>
+          <p>In partnership with <strong>TIRYAQ NGO</strong> · Biskra, Algeria</p>
+        </div>
+        <div>
+          <h2>Explore</h2>
+          <ul>
+            <li><a href="initiative-game.html">Initiative Idea Game</a></li>
+            <li><a href="planning.html">Initiative Canvas &amp; SMART game</a></li>
+            <li><a href="ai-toolkit.html">AI Toolkit for NGOs</a></li>
+            <li><a href="workshops.html">Workshops &amp; events</a></li>
+            <li><a href="about.html">About &amp; contact</a></li>
+            <li><a href="poster.html">Printable QR poster</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Get involved</h2>
+          <ul>
+            <li><a data-email href="about.html#contact">Email us</a></li>
+            <li><a href="about.html#contact">Join our WhatsApp community</a></li>
+            <li><a data-form="feedback" href="#">Give feedback ↗</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> NAWAT AI Youth Lab · Biskra, Algeria</span>
+        <span>Privacy: this site uses no cookies and sends none of your data anywhere.</span>
+      </div>
+    </div>
+  </footer>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/data/planning-data.js"></script>
+  <script src="assets/js/planning.js"></script>
+</body>
+</html>

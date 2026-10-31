@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Initiative Idea Game — NAWAT AI Youth Lab</title>
+  <meta name="description" content="Choose your theme, target group, skills, format and materials. Get a complete, realistic youth initiative with a zero-budget option and AI prompts.">
+  <meta name="theme-color" content="#0A1628">
+  <link rel="canonical" href="https://benloamina-svg.github.io/nawat-ai-youth-lab/initiative-game.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="NAWAT AI Youth Lab">
+  <meta property="og:title" content="Initiative Idea Game — NAWAT AI Youth Lab">
+  <meta property="og:description" content="Choose your theme, target group, skills, format and materials. Get a complete, realistic youth initiative with a zero-budget option and AI prompts.">
+  <meta property="og:url" content="https://benloamina-svg.github.io/nawat-ai-youth-lab/initiative-game.html">
+  <meta property="og:image" content="https://benloamina-svg.github.io/nawat-ai-youth-lab/assets/img/nawat-logo.png">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html" aria-label="NAWAT AI Youth Lab — home">
+        <img src="assets/img/nawat-logo.png" alt="" width="40" height="40">
+        <span class="brand-text">NAWAT AI<small>YOUTH LAB</small></span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Open navigation">☰</button>
+      <nav id="siteNav" class="site-nav" aria-label="Main">
+        <a href="index.html">Home</a>
+        <a href="initiative-game.html" class="nav-cta">Play the Idea Game</a>
+        <a href="planning.html">Plan it</a>
+        <a href="ai-toolkit.html">AI Toolkit</a>
+        <a href="workshops.html">Workshops</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero pattern print-hide">
+      <div class="wrap">
+        <p class="eyebrow">Initiative Idea Game</p>
+        <h1 class="title-xl">Design your next <span class="em">initiative.</span></h1>
+        <p class="lede">Make 7 quick choices. We combine them into a complete initiative plan that fits what you actually have — then give you AI prompts to take it further.</p>
+      </div>
+    </section>
+
+    <section class="section section-alt print-hide" id="play" aria-labelledby="play-title">
+      <div class="wrap game-layout">
+        <form id="gameForm" class="panel" novalidate>
+          <h2 class="title-lg" id="play-title">Your choices</h2>
+          <fieldset><legend><span>1</span>Theme</legend><div class="chips" id="themeChips"></div></fieldset>
+          <fieldset><legend><span>2</span>Target group</legend><div class="chips" id="targetChips"></div></fieldset>
+          <fieldset><legend><span>3</span>Skill to build</legend><div class="chips" id="skillChips"></div></fieldset>
+          <div class="field">
+            <label for="problem" class="label"><span>4</span>Problem to solve</label>
+            <textarea id="problem" rows="2" maxlength="200" placeholder="Describe it in one sentence, or pick a suggestion below"></textarea>
+            <div class="suggestions" id="problemSuggestions" aria-label="Problem suggestions"></div>
+          </div>
+          <fieldset><legend><span>5</span>Format</legend><div class="chips" id="formatChips"></div></fieldset>
+          <fieldset><legend><span>6</span>Organisation type</legend><div class="chips" id="orgChips"></div></fieldset>
+          <fieldset><legend><span>7</span>Available materials</legend><div class="chips" id="materialChips"></div></fieldset>
+          <div class="actions">
+            <button class="button" type="submit">Generate my initiative ✳</button>
+            <button class="button button-outline" type="button" id="exampleIdea">Try the Volunteer Passport example</button>
+          </div>
+        </form>
+        <aside class="game-aside">
+          <div class="card accent">
+            <h3>How it works</h3>
+            <ul class="check-list">
+              <li>No account, no AI key, works offline once loaded.</li>
+              <li>Every idea includes a zero-budget version.</li>
+              <li>Press “Shuffle” for a different creative angle.</li>
+              <li>Copy, print or download your idea as an image.</li>
+              <li>Use the 3 AI prompts to turn it into a full plan.</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <p class="wrap status print-hide" id="gameStatus" role="status" aria-live="polite"></p>
+
+    <section class="section" id="ideaResult" hidden aria-labelledby="result-title">
+      <div class="wrap">
+        <h2 class="title-lg print-hide" id="result-title">Your <span class="em">initiative card</span></h2>
+        <div class="actions print-hide">
+          <button class="button" type="button" id="shuffleIdea">Shuffle another idea ↻</button>
+          <button class="button button-outline" type="button" id="copyIdea">Copy</button>
+          <button class="button button-outline" type="button" id="printIdea">Print</button>
+          <button class="button button-outline" type="button" id="imageIdea">Download as image</button>
+          <button class="button button-outline" type="button" id="newIdea">Start over</button>
+          <a class="button button-outline" href="planning.html?from=game#canvas">Plan it on the Initiative Canvas →</a>
+        </div>
+        <article class="idea-card idea-result" id="ideaCard" tabindex="-1" aria-label="Generated initiative"></article>
+        <div class="print-hide">
+          <h2 class="title-lg idea-result">Develop it <span class="em">with AI</span></h2>
+          <p class="lede">Copy a prompt into ChatGPT, Claude or Google AI Studio. Always check the answer: AI is a thinking partner, not the final word.</p>
+          <div id="promptList"></div>
+          <p class="muted">Want to improve your prompts? Read the <a href="ai-toolkit.html">AI Toolkit for NGOs</a>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <h2>NAWAT AI Youth Lab</h2>
+          <p>Helping youth NGOs, clubs and changemakers design creative initiatives and use AI tools responsibly. From Nucleus to Nation.</p>
+          <p>In partnership with <strong>TIRYAQ NGO</strong> · Biskra, Algeria</p>
+        </div>
+        <div>
+          <h2>Explore</h2>
+          <ul>
+            <li><a href="initiative-game.html">Initiative Idea Game</a></li>
+            <li><a href="planning.html">Initiative Canvas &amp; SMART game</a></li>
+            <li><a href="ai-toolkit.html">AI Toolkit for NGOs</a></li>
+            <li><a href="workshops.html">Workshops &amp; events</a></li>
+            <li><a href="about.html">About &amp; contact</a></li>
+            <li><a href="poster.html">Printable QR poster</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Get involved</h2>
+          <ul>
+            <li><a data-email href="about.html#contact">Email us</a></li>
+            <li><a href="about.html#contact">Join our WhatsApp community</a></li>
+            <li><a data-form="feedback" href="#">Give feedback ↗</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> NAWAT AI Youth Lab · Biskra, Algeria</span>
+        <span>Privacy: this site uses no cookies and sends none of your data anywhere.</span>
+      </div>
+    </div>
+  </footer>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/data/game-data.js"></script>
+  <script src="assets/js/game.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Secrets — never commit (this project needs none)
+.env
+.env.*
+*.pem
+*.key
+secrets/
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+# Local notes and test output
+notes/
+*.local.md
+test-output/
+node_modules/
