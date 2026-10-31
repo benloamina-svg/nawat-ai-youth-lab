@@ -8,7 +8,7 @@ Static website (HTML + CSS + vanilla JS) on GitHub Pages. Product owner: Amina B
 - Render user text with `textContent` only. Never use `innerHTML` with user input.
 - No inline `<script>` or `style=""`: the CSP meta tag (`script-src 'self'; style-src 'self'`) blocks them.
 - Header/footer/CSP are duplicated in each `.html` page: change all seven together.
-- Follow `docs/DESIGN_SYSTEM.md` (NAWAT AI brand: navy/emerald, gold ≤10%). Brand name is always NAWAT / نوات.
+- Follow `docs/DESIGN_SYSTEM.md` (v2: navy void, weight-400 headlines, emerald pills only for main actions, gold labels). Brand name is always NAWAT / نوات.
 - Ask the product owner before pushing, changing repo visibility or any public action.
 
 ## Where things live

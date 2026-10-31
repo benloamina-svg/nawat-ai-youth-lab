@@ -80,4 +80,7 @@ If you use a different repository name, update `siteUrl` in `assets/js/config.js
 
 ## Credits
 
+Font: Inter (SIL Open Font License, `assets/fonts/OFL-LICENSE.txt`).
+
+
 Built by **Amina Benlouanas**, founder of NAWAT AI Youth Lab, in partnership with **TIRYAQ NGO** (Biskra, Algeria). Licence: MIT (see `LICENSE`).

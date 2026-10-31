@@ -7,4 +7,5 @@
 - Docs and deploy workflow added.
 - Added Google Form links. Added Plan it page (Initiative Canvas + SMART Goals game) from TIRYAQ worksheets; game links to canvas. Fixed print cut-off and a/an grammar. All tests pass.
 - **Status:** ready to publish once the owner approves the push.
-- **Open risks:** WhatsApp QR and email become public (awaiting confirmation).
+- Live site showed plain text: GitHub web upload skipped the `assets`, `docs` and `.github` folders. Redesigned to v2 (void style + NAWAT colours, constellation hero, self-hosted Inter); retested at 6 widths, no errors.
+- Contact switched to nawat.ai.youthlab@gmail.com; WhatsApp QR approved for public use.
