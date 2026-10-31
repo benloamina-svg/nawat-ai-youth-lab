@@ -12,3 +12,4 @@
 - Prepared hackathon submission pack, demo script and pitch deck; fixed canvas boxes not growing on screen. Tests pass.
 - Added Instagram/Facebook links and a full Arabic RTL version (/ar/): bilingual scripts, Arabic data, Noto Kufi Arabic font, RTL images. Fixed a hidden translate-function bug and RTL sideways scroll. EN + AR tests pass.
 - Added founder photo (About EN/AR + pitch deck team slide); corrected Arabic name spelling to أمينة بن الوناس.
+- Both GitHub repos had mixed old/new files from web uploads. Pushed the complete tested site to nawat-ai-youth-lab as a new commit on top of the upload.

@@ -15,7 +15,7 @@
 - [x] Docs, .gitignore, GitHub Actions deploy workflow, Claude skill
 
 ## Waiting on product owner ⏳
-- [ ] Create repo `benloamina-svg/nawat-ai-youth-lab` and approve the push
+- [x] Repo `benloamina-svg/nawat-ai-youth-lab` created; complete site pushed (31 Oct, 18:05)
 - [ ] Verify live site, run Lighthouse, scan QR codes
 - [x] Submission pack (docs/SUBMISSION.md), demo script, 8-slide pitch PDF, team section in README
 - [ ] Record 3-minute demo video; submit
